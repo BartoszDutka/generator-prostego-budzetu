@@ -1,19 +1,20 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import { useAuth } from '../context/AuthContext';
 import { addOperation } from '../firebase/db';
 
-const categories = ['Jedzenie', 'Transport', 'Mieszkanie', 'Rozrywka', 'Zdrowie', 'Edukacja', 'Odzież', 'Rachunki', 'Pensja', 'Inne'];
+const categories = ['Jedzenie', 'Transport', 'Mieszkanie', 'Rozrywka', 'Zdrowie', 'Edukacja', 'Odzież', 'Rachunki', 'Pensja', 'Oszczędności', 'Inne'];
 
 export default function AddOperationPage() {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const { currentUser } = useAuth();
-  const [type, setType] = useState('expense');
+  const [type, setType] = useState(searchParams.get('type') === 'income' ? 'income' : 'expense');
   const [amount, setAmount] = useState('');
   const [date, setDate] = useState('');
-  const [category, setCategory] = useState('');
+  const [category, setCategory] = useState(searchParams.get('category') || '');
   const [description, setDescription] = useState('');
   const [success, setSuccess] = useState(false);
   const [loading, setLoading] = useState(false);

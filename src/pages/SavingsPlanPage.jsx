@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import { useAuth } from '../context/AuthContext';
@@ -17,6 +18,7 @@ export default function SavingsPlanPage() {
   const { currentUser } = useAuth();
   const maxVal = Math.max(...chartData.map((d) => d.value));
 
+  const navigate = useNavigate();
   const [goal, setGoal] = useState(null);
   const [loading, setLoading] = useState(true);
   const [editing, setEditing] = useState(false);
@@ -187,10 +189,10 @@ export default function SavingsPlanPage() {
                     Regularne miesięczne wpłaty to najskuteczniejszy sposób na osiągnięcie celu finansowego. Nawet małe kwoty robią różnicę.
                   </p>
                   <button
-                    onClick={() => setEditing(true)}
+                    onClick={() => navigate('/add?category=Oszczędności&type=income')}
                     className="w-full bg-[#2563EB] hover:bg-[#1D4ED8] text-white font-semibold py-2.5 rounded-xl text-sm transition-colors"
                   >
-                    Zaktualizuj plan
+                    Dodaj wpłatę
                   </button>
                 </div>
               </div>
@@ -245,7 +247,7 @@ export default function SavingsPlanPage() {
                     Twój plan jest gotowy. Pierwsza wpłata dzisiaj przyspieszy Twój cel.
                   </p>
                   <button
-                    onClick={() => setEditing(true)}
+                    onClick={() => navigate('/add?category=Oszczędności&type=income')}
                     className="bg-white hover:bg-gray-50 text-[#2563EB] font-semibold px-5 py-2.5 rounded-xl text-sm transition-colors inline-flex items-center gap-2 shadow-sm"
                   >
                     Zaktualizuj wpłatę
