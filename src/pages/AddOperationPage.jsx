@@ -97,18 +97,13 @@ export default function AddOperationPage() {
                     <div className="flex items-center justify-center gap-3">
                       <input
                         type="number"
-                        step="10"
+                        step="1"
                         min="10"
                         max="1000000000"
                         className="text-4xl font-bold text-[#9CA3AF] text-center bg-transparent border-none outline-none w-40 focus:text-[#111827]"
                         placeholder="0"
                         value={amount}
-                        onChange={(e) => {
-                          const val = e.target.value;
-                          if (val === '' || (Number(val) % 10 === 0 && Number(val) <= 1000000000)) {
-                            setAmount(val);
-                          }
-                        }}
+                        onChange={(e) => setAmount(e.target.value)}
                         required
                       />
                       <span className="text-2xl font-semibold text-[#6B7280]">PLN</span>
