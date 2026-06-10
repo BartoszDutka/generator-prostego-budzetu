@@ -9,6 +9,7 @@ import {
   query,
   orderBy,
   serverTimestamp,
+  increment,
 } from 'firebase/firestore';
 import { db } from './config';
 
@@ -31,10 +32,21 @@ export async function getOperations(uid) {
 }
 
 export async function addOperation(uid, operation) {
-  return addDoc(operationsRef(uid), {
+  const result = await addDoc(operationsRef(uid), {
     ...operation,
     createdAt: serverTimestamp(),
   });
+
+  // If it's a savings deposit, increment savedAmount in the goal automatically
+  if (operation.category === 'Oszczędności' && operation.amount > 0) {
+    await setDoc(
+      doc(userRef(uid), 'savingsGoal', 'data'),
+      { savedAmount: increment(operation.amount) },
+      { merge: true }
+    );
+  }
+
+  return result;
 }
 
 export async function deleteOperation(uid, operationId) {
