@@ -1,9 +1,8 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import { useAuth } from '../context/AuthContext';
-import { getSavingsGoal, saveSavingsGoal } from '../firebase/db';
+import { getSavingsGoal, saveSavingsGoal, addOperation } from '../firebase/db';
 
 const chartData = [
   { month: 'Sty', value: 35 },
@@ -18,13 +17,19 @@ export default function SavingsPlanPage() {
   const { currentUser } = useAuth();
   const maxVal = Math.max(...chartData.map((d) => d.value));
 
-  const navigate = useNavigate();
   const [goal, setGoal] = useState(null);
   const [loading, setLoading] = useState(true);
   const [editing, setEditing] = useState(false);
   const [saveSuccess, setSaveSuccess] = useState('');
   const [saveError, setSaveError] = useState('');
   const [saving, setSaving] = useState(false);
+
+  // Deposit modal
+  const [depositOpen, setDepositOpen] = useState(false);
+  const [depositAmount, setDepositAmount] = useState('');
+  const [depositDate, setDepositDate] = useState(new Date().toISOString().slice(0, 10));
+  const [depositLoading, setDepositLoading] = useState(false);
+  const [depositError, setDepositError] = useState('');
 
   const [form, setForm] = useState({
     title: '',
@@ -72,6 +77,34 @@ export default function SavingsPlanPage() {
       setSaveError('Nie udało się zapisać planu.');
     } finally {
       setSaving(false);
+    }
+  }
+
+  async function handleDeposit(e) {
+    e.preventDefault();
+    setDepositError('');
+    const amt = parseFloat(depositAmount);
+    if (!amt || amt <= 0) return setDepositError('Podaj prawidłową kwotę.');
+    setDepositLoading(true);
+    try {
+      await addOperation(currentUser.uid, {
+        name: `Wpłata: ${goal?.title || 'Oszczędności'}`,
+        amount: amt,
+        type: 'income',
+        category: 'Oszczędności',
+        date: depositDate,
+        description: `Wpłata na cel: ${goal?.title || 'Oszczędności'}`,
+      });
+      const newSaved = (goal?.savedAmount || 0) + amt;
+      setGoal((prev) => ({ ...prev, savedAmount: newSaved }));
+      setDepositAmount('');
+      setDepositOpen(false);
+      setSaveSuccess(`Wpłacono ${amt.toFixed(2)} PLN!`);
+      setTimeout(() => setSaveSuccess(''), 3000);
+    } catch {
+      setDepositError('Nie udało się zapisać wpłaty.');
+    } finally {
+      setDepositLoading(false);
     }
   }
 
@@ -189,7 +222,7 @@ export default function SavingsPlanPage() {
                     Regularne miesięczne wpłaty to najskuteczniejszy sposób na osiągnięcie celu finansowego. Nawet małe kwoty robią różnicę.
                   </p>
                   <button
-                    onClick={() => navigate('/add?category=Oszczędności&type=income')}
+                    onClick={() => setDepositOpen(true)}
                     className="w-full bg-[#2563EB] hover:bg-[#1D4ED8] text-white font-semibold py-2.5 rounded-xl text-sm transition-colors"
                   >
                     Dodaj wpłatę
@@ -247,7 +280,7 @@ export default function SavingsPlanPage() {
                     Twój plan jest gotowy. Pierwsza wpłata dzisiaj przyspieszy Twój cel.
                   </p>
                   <button
-                    onClick={() => navigate('/add?category=Oszczędności&type=income')}
+                    onClick={() => setDepositOpen(true)}
                     className="bg-white hover:bg-gray-50 text-[#2563EB] font-semibold px-5 py-2.5 rounded-xl text-sm transition-colors inline-flex items-center gap-2 shadow-sm"
                   >
                     Zaktualizuj wpłatę
@@ -259,6 +292,80 @@ export default function SavingsPlanPage() {
         </div>
       </main>
       <Footer />
+
+      {/* Deposit modal */}
+      {depositOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center px-4">
+          <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={() => setDepositOpen(false)} />
+          <div className="relative bg-white rounded-2xl shadow-xl w-full max-w-md p-6 z-10">
+            <div className="flex items-center justify-between mb-5">
+              <div className="flex items-center gap-3">
+                <div className="w-9 h-9 bg-[#EFF6FF] rounded-xl flex items-center justify-center">
+                  <svg className="w-5 h-5 text-[#2563EB]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                  </svg>
+                </div>
+                <div>
+                  <h3 className="font-bold text-[#111827]">Dodaj wpłatę</h3>
+                  <p className="text-xs text-[#6B7280]">{goal?.title || 'Oszczędności'}</p>
+                </div>
+              </div>
+              <button onClick={() => setDepositOpen(false)} className="text-[#9CA3AF] hover:text-[#374151] transition-colors">
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+
+            {depositError && (
+              <div className="bg-[#FEF2F2] border border-red-200 text-[#EF4444] rounded-lg px-4 py-2.5 text-sm mb-4">{depositError}</div>
+            )}
+
+            <form onSubmit={handleDeposit} className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-[#374151] mb-1.5">Kwota wpłaty (PLN)</label>
+                <input
+                  type="number"
+                  min="0.01"
+                  step="0.01"
+                  autoFocus
+                  className="w-full bg-[#F9FAFB] border border-[#E5E7EB] rounded-lg px-4 py-2.5 text-sm text-[#111827] focus:outline-none focus:ring-2 focus:ring-[#2563EB]"
+                  placeholder="np. 500"
+                  value={depositAmount}
+                  onChange={(e) => setDepositAmount(e.target.value)}
+                  required
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-[#374151] mb-1.5">Data</label>
+                <input
+                  type="date"
+                  className="w-full bg-[#F9FAFB] border border-[#E5E7EB] rounded-lg px-4 py-2.5 text-sm text-[#111827] focus:outline-none focus:ring-2 focus:ring-[#2563EB]"
+                  value={depositDate}
+                  onChange={(e) => setDepositDate(e.target.value)}
+                  required
+                />
+              </div>
+
+              <div className="bg-[#F9FAFB] border border-[#E5E7EB] rounded-xl p-3 flex justify-between text-sm">
+                <span className="text-[#6B7280]">Zaoszczędzono po wpłacie</span>
+                <span className="font-bold text-[#2563EB]">
+                  {((goal?.savedAmount || 0) + (parseFloat(depositAmount) || 0)).toFixed(2).replace('.', ',')} PLN
+                </span>
+              </div>
+
+              <div className="flex gap-3 pt-1">
+                <button type="button" onClick={() => setDepositOpen(false)} className="flex-1 bg-white border border-[#E5E7EB] hover:bg-gray-50 text-[#374151] font-medium py-2.5 rounded-lg text-sm transition-colors">
+                  Anuluj
+                </button>
+                <button type="submit" disabled={depositLoading} className="flex-1 bg-[#2563EB] hover:bg-[#1D4ED8] text-white font-semibold py-2.5 rounded-lg text-sm transition-colors disabled:opacity-60">
+                  {depositLoading ? 'Zapisywanie…' : 'Wpłać'}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
