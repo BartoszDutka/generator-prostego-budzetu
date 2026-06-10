@@ -20,7 +20,8 @@ function GoogleIcon() {
 export default function RegisterPage() {
   const { register, loginWithGoogle } = useAuth();
   const navigate = useNavigate();
-  const [fullName, setFullName] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -38,14 +39,9 @@ export default function RegisterPage() {
     try {
       const userCredential = await register(email, password);
       const user = userCredential.user;
+      const fullName = `${firstName} ${lastName}`.trim();
 
-      // Save displayName to Firebase Auth
       await updateProfile(user, { displayName: fullName });
-
-      // Save first/last name to Firestore profile
-      const parts = fullName.trim().split(' ');
-      const firstName = parts[0] || '';
-      const lastName = parts.slice(1).join(' ') || '';
       await saveProfile(user.uid, { firstName, lastName });
 
       navigate('/dashboard');
@@ -97,9 +93,15 @@ export default function RegisterPage() {
             )}
 
             <form onSubmit={handleSubmit} className="space-y-4">
-              <div>
-                <label className="block text-sm font-medium text-[#374151] mb-1.5">Imię i nazwisko</label>
-                <input type="text" className={inputCls} placeholder="Jan Kowalski" value={fullName} onChange={(e) => setFullName(e.target.value)} required />
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-sm font-medium text-[#374151] mb-1.5">Imię</label>
+                  <input type="text" className={inputCls} placeholder="Jan" value={firstName} onChange={(e) => setFirstName(e.target.value)} required />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-[#374151] mb-1.5">Nazwisko</label>
+                  <input type="text" className={inputCls} placeholder="Kowalski" value={lastName} onChange={(e) => setLastName(e.target.value)} required />
+                </div>
               </div>
               <div>
                 <label className="block text-sm font-medium text-[#374151] mb-1.5">Adres email</label>

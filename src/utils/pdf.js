@@ -4,33 +4,43 @@ const BLUE = [37, 99, 235];
 const GRAY = [107, 114, 128];
 const DARK = [17, 24, 39];
 
+// jsPDF default fonts don't support Polish characters — transliterate them
+function pl(str) {
+  return String(str ?? '')
+    .replace(/ą/g, 'a').replace(/Ą/g, 'A')
+    .replace(/ć/g, 'c').replace(/Ć/g, 'C')
+    .replace(/ę/g, 'e').replace(/Ę/g, 'E')
+    .replace(/ł/g, 'l').replace(/Ł/g, 'L')
+    .replace(/ń/g, 'n').replace(/Ń/g, 'N')
+    .replace(/ó/g, 'o').replace(/Ó/g, 'O')
+    .replace(/ś/g, 's').replace(/Ś/g, 'S')
+    .replace(/ź/g, 'z').replace(/Ź/g, 'Z')
+    .replace(/ż/g, 'z').replace(/Ż/g, 'Z');
+}
+
 function baseDoc(title, subtitle = '') {
   const doc = new jsPDF();
 
-  // Header bar
   doc.setFillColor(...BLUE);
   doc.rect(0, 0, 210, 22, 'F');
 
-  // Title in header
   doc.setTextColor(255, 255, 255);
   doc.setFontSize(13);
   doc.setFont('helvetica', 'bold');
   doc.text('Generator prostego budzetu', 14, 14);
 
-  // Document title
   doc.setTextColor(...DARK);
   doc.setFontSize(20);
   doc.setFont('helvetica', 'bold');
-  doc.text(title, 14, 45);
+  doc.text(pl(title), 14, 45);
 
   if (subtitle) {
     doc.setFontSize(11);
     doc.setFont('helvetica', 'normal');
     doc.setTextColor(...GRAY);
-    doc.text(subtitle, 14, 54);
+    doc.text(pl(subtitle), 14, 54);
   }
 
-  // Separator line
   doc.setDrawColor(...BLUE);
   doc.setLineWidth(0.5);
   doc.line(14, 60, 196, 60);
@@ -49,12 +59,12 @@ function addPlaceholderContent(doc, lines, startY = 72) {
       y += 3;
       doc.setFont('helvetica', 'bold');
       doc.setFontSize(13);
-      doc.text(line.replace('## ', ''), 14, y);
+      doc.text(pl(line.replace('## ', '')), 14, y);
       doc.setFont('helvetica', 'normal');
       doc.setFontSize(11);
       y += 7;
     } else {
-      const wrapped = doc.splitTextToSize(line, 182);
+      const wrapped = doc.splitTextToSize(pl(line), 182);
       doc.text(wrapped, 14, y);
       y += wrapped.length * 6;
     }
@@ -215,6 +225,7 @@ export function downloadRaport(operations = []) {
   doc.text('BILANS', 18, y + 7);
   doc.text('PRZYCHODY', 76, y + 7);
   doc.text('WYDATKI', 134, y + 7);
+  // (these are already ASCII-safe)
 
   doc.setFontSize(11);
   doc.setFont('helvetica', 'bold');
@@ -253,8 +264,8 @@ export function downloadRaport(operations = []) {
     }
     doc.setTextColor(...DARK);
     doc.text(op.date || '', 16, y + 5.5);
-    doc.text(doc.splitTextToSize(op.name || op.description || '', 65)[0], 50, y + 5.5);
-    doc.text(op.category || '', 120, y + 5.5);
+    doc.text(doc.splitTextToSize(pl(op.name || op.description || ''), 65)[0], 50, y + 5.5);
+    doc.text(pl(op.category || ''), 120, y + 5.5);
     const amtStr = (op.amount > 0 ? '+ ' : '- ') + fmt(op.amount);
     doc.setTextColor(op.amount > 0 ? 22 : 239, op.amount > 0 ? 163 : 68, op.amount > 0 ? 74 : 68);
     doc.text(amtStr, 165, y + 5.5);
