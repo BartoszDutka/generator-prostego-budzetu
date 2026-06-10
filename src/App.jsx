@@ -22,8 +22,7 @@ import HelpPage from './pages/HelpPage';
 import ContactPage from './pages/ContactPage';
 import NotFoundPage from './pages/NotFoundPage';
 
-// TODO: Zastąp YOUR_GA4_ID rzeczywistym ID z Google Analytics (np. G-XXXXXXXXXX)
-const GA4_MEASUREMENT_ID = 'G-XXXXXXXXXX';
+const GA4_MEASUREMENT_ID = import.meta.env.VITE_GA4_MEASUREMENT_ID;
 
 // TODO: Zastąp 1234567 rzeczywistym Site ID z Hotjar
 const HOTJAR_SITE_ID = 1234567;
