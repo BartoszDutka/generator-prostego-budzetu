@@ -1,6 +1,5 @@
 import { useEffect } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import Hotjar from '@hotjar/browser';
 import ReactGA from 'react-ga4';
 
 import { AuthProvider } from './context/AuthContext';
@@ -24,13 +23,9 @@ import NotFoundPage from './pages/NotFoundPage';
 
 const GA4_MEASUREMENT_ID = import.meta.env.VITE_GA4_MEASUREMENT_ID;
 
-const HOTJAR_SITE_ID = Number(import.meta.env.VITE_HOTJAR_SITE_ID);
-const HOTJAR_VERSION = 6;
-
 export default function App() {
   useEffect(() => {
     ReactGA.initialize(GA4_MEASUREMENT_ID);
-    Hotjar.init(HOTJAR_SITE_ID, HOTJAR_VERSION);
   }, []);
 
   return (
