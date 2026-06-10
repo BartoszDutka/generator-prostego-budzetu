@@ -15,9 +15,6 @@ build/
 .env.test.local
 .env.production.local
 
-# Firebase (klucze API — skopiuj z README)
-src/firebase/config.js
-
 # Logs
 logs/
 *.log
