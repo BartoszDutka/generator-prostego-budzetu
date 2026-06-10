@@ -29,9 +29,10 @@ export default function ProfilePage() {
 
   useEffect(() => {
     if (!currentUser) return;
+    const [googleFirst = '', googleLast = ''] = (currentUser.displayName || '').split(' ');
     getProfile(currentUser.uid).then((data) => {
-      setFirstName(data.firstName || '');
-      setLastName(data.lastName || '');
+      setFirstName(data.firstName || googleFirst);
+      setLastName(data.lastName || googleLast);
     });
   }, [currentUser]);
 
