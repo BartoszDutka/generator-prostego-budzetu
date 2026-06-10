@@ -1,0 +1,70 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    box-sizing: border-box;
+  }
+
+  body {
+    font-family: 'Inter', 'Poppins', sans-serif;
+    color: #111827;
+    background-color: #ffffff;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Poppins', 'Inter', sans-serif;
+    font-weight: 600;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-primary hover:bg-primary-dark text-white font-semibold px-5 py-2.5 rounded-lg transition-colors duration-200 inline-flex items-center gap-2;
+  }
+
+  .btn-outline {
+    @apply border border-primary text-primary hover:bg-primary-light font-semibold px-5 py-2.5 rounded-lg transition-colors duration-200 inline-flex items-center gap-2;
+  }
+
+  .btn-ghost {
+    @apply text-gray-text hover:text-primary font-medium px-3 py-2 rounded-lg transition-colors duration-200;
+  }
+
+  .card {
+    @apply bg-white border border-gray-border rounded-xl shadow-sm p-6;
+  }
+
+  .input-field {
+    @apply w-full border border-gray-border rounded-lg px-4 py-2.5 text-gray-darker placeholder-gray-mid focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-200;
+  }
+
+  .badge-income {
+    @apply bg-success-light text-success text-xs font-semibold px-2.5 py-0.5 rounded-full;
+  }
+
+  .badge-expense {
+    @apply bg-danger-light text-danger text-xs font-semibold px-2.5 py-0.5 rounded-full;
+  }
+
+  .badge-category {
+    @apply bg-primary-light text-primary text-xs font-semibold px-2.5 py-0.5 rounded-full uppercase tracking-wide;
+  }
+
+  .nav-link {
+    @apply text-gray-dark hover:text-primary font-medium transition-colors duration-200;
+  }
+
+  .nav-link-active {
+    @apply text-primary font-semibold;
+  }
+
+  .section-title {
+    @apply text-2xl font-bold text-gray-darker;
+  }
+
+  .label {
+    @apply block text-sm font-medium text-gray-dark mb-1.5;
+  }
+}
