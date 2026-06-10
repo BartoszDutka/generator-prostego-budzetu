@@ -1,18 +1,20 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
+import { getProfile, saveProfile } from '../firebase/db';
 
 export default function ProfilePage() {
-  const { currentUser, changePassword, deleteAccount, logout } = useAuth();
+  const { currentUser, changePassword, deleteAccount } = useAuth();
   const navigate = useNavigate();
 
-  const [firstName, setFirstName] = useState('Jan');
-  const [lastName, setLastName] = useState('Kowalski');
-  const [email] = useState(currentUser?.email || 'jan.kowalski@example.com');
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [email] = useState(currentUser?.email || '');
   const [profileSuccess, setProfileSuccess] = useState('');
   const [profileError, setProfileError] = useState('');
+  const [profileLoading, setProfileLoading] = useState(false);
 
   const [currentPwd, setCurrentPwd] = useState('');
   const [newPwd, setNewPwd] = useState('');
@@ -25,11 +27,27 @@ export default function ProfilePage() {
   const [deleteError, setDeleteError] = useState('');
   const [deleteLoading, setDeleteLoading] = useState(false);
 
-  function handleProfileSave(e) {
+  useEffect(() => {
+    if (!currentUser) return;
+    getProfile(currentUser.uid).then((data) => {
+      setFirstName(data.firstName || '');
+      setLastName(data.lastName || '');
+    });
+  }, [currentUser]);
+
+  async function handleProfileSave(e) {
     e.preventDefault();
-    setProfileSuccess('Dane zostały zapisane.');
     setProfileError('');
-    setTimeout(() => setProfileSuccess(''), 3000);
+    setProfileLoading(true);
+    try {
+      await saveProfile(currentUser.uid, { firstName, lastName });
+      setProfileSuccess('Dane zostały zapisane.');
+      setTimeout(() => setProfileSuccess(''), 3000);
+    } catch {
+      setProfileError('Nie udało się zapisać danych.');
+    } finally {
+      setProfileLoading(false);
+    }
   }
 
   async function handlePasswordChange(e) {
@@ -58,7 +76,7 @@ export default function ProfilePage() {
       await deleteAccount();
       navigate('/');
     } catch {
-      setDeleteError('Nie udało się usunąć konta. Spróbuj ponownie lub zaloguj się ponownie.');
+      setDeleteError('Nie udało się usunąć konta. Zaloguj się ponownie i spróbuj.');
     } finally {
       setDeleteLoading(false);
     }
@@ -75,7 +93,6 @@ export default function ProfilePage() {
           <p className="text-[#6B7280] text-sm mb-6">Zarządzaj swoimi danymi i ustawieniami bezpieczeństwa.</p>
 
           <div className="grid lg:grid-cols-3 gap-6">
-            {/* Left: forms */}
             <div className="lg:col-span-2 space-y-6">
               {/* Personal data */}
               <div className="bg-white border border-[#E5E7EB] rounded-xl shadow-sm p-6">
@@ -88,16 +105,8 @@ export default function ProfilePage() {
                   <h2 className="text-lg font-bold text-[#111827]">Dane osobowe</h2>
                 </div>
 
-                {profileSuccess && (
-                  <div className="bg-[#F0FDF4] border border-green-200 text-[#16A34A] rounded-lg px-4 py-3 text-sm mb-4">
-                    {profileSuccess}
-                  </div>
-                )}
-                {profileError && (
-                  <div className="bg-[#FEF2F2] border border-red-200 text-[#EF4444] rounded-lg px-4 py-3 text-sm mb-4">
-                    {profileError}
-                  </div>
-                )}
+                {profileSuccess && <div className="bg-[#F0FDF4] border border-green-200 text-[#16A34A] rounded-lg px-4 py-3 text-sm mb-4">{profileSuccess}</div>}
+                {profileError && <div className="bg-[#FEF2F2] border border-red-200 text-[#EF4444] rounded-lg px-4 py-3 text-sm mb-4">{profileError}</div>}
 
                 <form onSubmit={handleProfileSave} className="space-y-4">
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -115,8 +124,8 @@ export default function ProfilePage() {
                     <input type="email" className={`${inputCls} opacity-60 cursor-not-allowed`} value={email} readOnly />
                   </div>
                   <div className="flex justify-end">
-                    <button type="submit" className="bg-[#2563EB] hover:bg-[#1D4ED8] text-white font-semibold px-6 py-2.5 rounded-lg text-sm transition-colors">
-                      Zapisz zmiany
+                    <button type="submit" disabled={profileLoading} className="bg-[#2563EB] hover:bg-[#1D4ED8] text-white font-semibold px-6 py-2.5 rounded-lg text-sm transition-colors disabled:opacity-60">
+                      {profileLoading ? 'Zapisywanie…' : 'Zapisz zmiany'}
                     </button>
                   </div>
                 </form>
@@ -133,16 +142,8 @@ export default function ProfilePage() {
                   <h2 className="text-lg font-bold text-[#111827]">Zmiana hasła</h2>
                 </div>
 
-                {pwdSuccess && (
-                  <div className="bg-[#F0FDF4] border border-green-200 text-[#16A34A] rounded-lg px-4 py-3 text-sm mb-4">
-                    {pwdSuccess}
-                  </div>
-                )}
-                {pwdError && (
-                  <div className="bg-[#FEF2F2] border border-red-200 text-[#EF4444] rounded-lg px-4 py-3 text-sm mb-4">
-                    {pwdError}
-                  </div>
-                )}
+                {pwdSuccess && <div className="bg-[#F0FDF4] border border-green-200 text-[#16A34A] rounded-lg px-4 py-3 text-sm mb-4">{pwdSuccess}</div>}
+                {pwdError && <div className="bg-[#FEF2F2] border border-red-200 text-[#EF4444] rounded-lg px-4 py-3 text-sm mb-4">{pwdError}</div>}
 
                 <form onSubmit={handlePasswordChange} className="space-y-4">
                   <div>
@@ -172,18 +173,11 @@ export default function ProfilePage() {
             <div>
               <div className="bg-white border border-[#E5E7EB] rounded-xl shadow-sm p-6">
                 <p className="text-sm text-[#6B7280] mb-4 leading-relaxed">
-                  Usunięcie konta jest nieodwracalne. Wszystkie Twoje dane finansowe i historia transakcji zostaną trwale usunięte z naszych serwerów.
+                  Usunięcie konta jest nieodwracalne. Wszystkie Twoje dane finansowe i historia transakcji zostaną trwale usunięte.
                 </p>
-                {deleteError && (
-                  <div className="bg-[#FEF2F2] border border-red-200 text-[#EF4444] rounded-lg px-3 py-2.5 text-xs mb-4">
-                    {deleteError}
-                  </div>
-                )}
+                {deleteError && <div className="bg-[#FEF2F2] border border-red-200 text-[#EF4444] rounded-lg px-3 py-2.5 text-xs mb-4">{deleteError}</div>}
                 {!deleteConfirm ? (
-                  <button
-                    onClick={() => setDeleteConfirm(true)}
-                    className="w-full border border-[#EF4444] text-[#EF4444] hover:bg-[#FEF2F2] font-semibold py-2.5 rounded-lg text-sm transition-colors"
-                  >
+                  <button onClick={() => setDeleteConfirm(true)} className="w-full border border-[#EF4444] text-[#EF4444] hover:bg-[#FEF2F2] font-semibold py-2.5 rounded-lg text-sm transition-colors">
                     Usuń konto
                   </button>
                 ) : (
