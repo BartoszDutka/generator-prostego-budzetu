@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { updateProfile } from 'firebase/auth';
 import { useAuth } from '../context/AuthContext';
+import { saveProfile } from '../firebase/db';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 
@@ -34,7 +36,18 @@ export default function RegisterPage() {
     if (!accepted) return setError('Musisz zaakceptować Regulamin i Politykę Prywatności.');
     setLoading(true);
     try {
-      await register(email, password);
+      const userCredential = await register(email, password);
+      const user = userCredential.user;
+
+      // Save displayName to Firebase Auth
+      await updateProfile(user, { displayName: fullName });
+
+      // Save first/last name to Firestore profile
+      const parts = fullName.trim().split(' ');
+      const firstName = parts[0] || '';
+      const lastName = parts.slice(1).join(' ') || '';
+      await saveProfile(user.uid, { firstName, lastName });
+
       navigate('/dashboard');
     } catch (err) {
       if (err.code === 'auth/email-already-in-use') {
