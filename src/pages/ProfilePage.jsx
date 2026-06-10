@@ -100,7 +100,7 @@ export default function ProfilePage() {
                 )}
 
                 <form onSubmit={handleProfileSave} className="space-y-4">
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
                       <label className="block text-sm font-medium text-[#374151] mb-1.5">Imię</label>
                       <input type="text" className={inputCls} value={firstName} onChange={(e) => setFirstName(e.target.value)} placeholder="Jan" />
@@ -149,7 +149,7 @@ export default function ProfilePage() {
                     <label className="block text-sm font-medium text-[#374151] mb-1.5">Obecne hasło</label>
                     <input type="password" className={inputCls} placeholder="••••••••" value={currentPwd} onChange={(e) => setCurrentPwd(e.target.value)} required />
                   </div>
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
                       <label className="block text-sm font-medium text-[#374151] mb-1.5">Nowe hasło</label>
                       <input type="password" className={inputCls} placeholder="Min. 8 znaków" value={newPwd} onChange={(e) => setNewPwd(e.target.value)} required />

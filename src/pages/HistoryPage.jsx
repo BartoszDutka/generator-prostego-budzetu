@@ -115,6 +115,7 @@ export default function HistoryPage() {
 
           {/* Table card */}
           <div className="bg-white border border-[#E5E7EB] rounded-xl shadow-sm overflow-hidden">
+            <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead className="bg-[#F9FAFB] border-b border-[#E5E7EB]">
                 <tr>
@@ -165,6 +166,7 @@ export default function HistoryPage() {
                 ))}
               </tbody>
             </table>
+            </div>
 
             {/* Pagination row */}
             <div className="px-6 py-4 border-t border-[#E5E7EB] flex items-center justify-between bg-white">

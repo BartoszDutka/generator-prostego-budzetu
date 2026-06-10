@@ -41,7 +41,7 @@ export default function ContactPage() {
                 </div>
               ) : (
                 <form onSubmit={handleSubmit} className="space-y-4">
-                  <div className="grid grid-cols-2 gap-3">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div>
                       <label className="block text-sm font-medium text-[#374151] mb-1.5">Imię i Nazwisko</label>
                       <input type="text" className={inputCls} placeholder="Jan Kowalski" value={name} onChange={(e) => setName(e.target.value)} required />

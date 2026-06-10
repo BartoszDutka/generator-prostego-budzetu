@@ -14,7 +14,7 @@ export default function Logo({ size = 'md' }) {
         style={{ height: s.height, width: 'auto' }}
         className="flex-shrink-0"
       />
-      <span className={`${s.text} font-bold text-[#2563EB] leading-tight`}>
+      <span className={`${s.text} font-bold text-[#2563EB] leading-tight hidden sm:inline`}>
         Generator prostego budżetu
       </span>
     </div>

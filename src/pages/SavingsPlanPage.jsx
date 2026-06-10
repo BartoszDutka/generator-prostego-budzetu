@@ -72,7 +72,7 @@ export default function SavingsPlanPage() {
               <div className="bg-[#E5E7EB] rounded-full h-2 mb-6">
                 <div className="bg-[#2563EB] h-2 rounded-full" style={{ width: '75%' }} />
               </div>
-              <div className="grid grid-cols-3 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                 {[
                   { label: 'Zaoszczędzono', value: '9 000,00 PLN', blue: false },
                   { label: 'Pozostało', value: '3 000,00 PLN', blue: false },
@@ -160,10 +160,9 @@ export default function SavingsPlanPage() {
 
           {/* CTA */}
           <div className="relative bg-[#2563EB] rounded-2xl p-8 overflow-hidden min-h-[160px] flex items-center">
-            {/* Decorative oval/circle on the right with plant illustration */}
-            <div className="absolute right-8 top-1/2 -translate-y-1/2 w-48 h-44 rounded-full bg-[#1D4ED8] flex items-end justify-center overflow-hidden opacity-80">
+            {/* Decorative oval — desktop only */}
+            <div className="hidden sm:flex absolute right-8 top-1/2 -translate-y-1/2 w-48 h-44 rounded-full bg-[#1D4ED8] items-end justify-center overflow-hidden opacity-80">
               <div className="w-32 h-32 flex items-end justify-center pb-2">
-                {/* Sprout SVG illustration */}
                 <svg viewBox="0 0 80 80" fill="none" className="w-full h-full opacity-70">
                   <ellipse cx="40" cy="72" rx="20" ry="5" fill="#1E40AF" opacity="0.5"/>
                   <path d="M40 70 L40 35" stroke="#93C5FD" strokeWidth="2.5" strokeLinecap="round"/>
@@ -174,7 +173,7 @@ export default function SavingsPlanPage() {
               </div>
             </div>
 
-            <div className="relative z-10 pr-56">
+            <div className="relative z-10 pr-0 sm:pr-56">
               <h2 className="text-2xl font-bold text-white mb-2">Zmotywowany do startu?</h2>
               <p className="text-blue-100 text-sm mb-5 leading-relaxed">
                 Twój plan jest gotowy do wdrożenia. Pierwsza wpłata dzisiaj przyspieszy Twój cel o 12 dni.

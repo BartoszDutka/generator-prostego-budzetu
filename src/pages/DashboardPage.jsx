@@ -32,7 +32,7 @@ export default function DashboardPage() {
         <div className="max-w-7xl mx-auto space-y-6">
 
           {/* Header with date nav */}
-          <div className="flex items-start justify-between">
+          <div className="flex flex-col sm:flex-row sm:items-center gap-3 justify-between">
             <div>
               <h1 className="text-2xl font-bold text-[#111827]">Przegląd</h1>
               <p className="text-[#6B7280] mt-0.5 text-sm">Witaj ponownie! Oto Twój aktualny stan finansów.</p>
@@ -216,6 +216,7 @@ export default function DashboardPage() {
               </div>
             </div>
 
+            <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b border-[#E5E7EB]">
@@ -244,6 +245,7 @@ export default function DashboardPage() {
                   ))}
               </tbody>
             </table>
+            </div>
 
             <div className="mt-4 pt-4 border-t border-[#F3F4F6] text-center">
               <Link to="/history" className="text-sm text-[#2563EB] hover:underline font-medium">
