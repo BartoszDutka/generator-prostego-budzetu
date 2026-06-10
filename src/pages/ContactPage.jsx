@@ -54,7 +54,8 @@ export default function ContactPage() {
                   <div>
                     <label className="block text-sm font-medium text-[#374151] mb-1.5">Temat</label>
                     <select className={inputCls} value={subject} onChange={(e) => setSubject(e.target.value)} required>
-                      <option value="">Zapytanie ogólne</option>
+                      <option value="" disabled>Wybierz temat...</option>
+                      <option value="general">Zapytanie ogólne</option>
                       <option value="tech">Problem techniczny</option>
                       <option value="billing">Płatność i konto</option>
                       <option value="feature">Sugestia funkcji</option>
