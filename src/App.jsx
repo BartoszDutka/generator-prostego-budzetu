@@ -24,8 +24,7 @@ import NotFoundPage from './pages/NotFoundPage';
 
 const GA4_MEASUREMENT_ID = import.meta.env.VITE_GA4_MEASUREMENT_ID;
 
-// TODO: Zastąp 1234567 rzeczywistym Site ID z Hotjar
-const HOTJAR_SITE_ID = 1234567;
+const HOTJAR_SITE_ID = Number(import.meta.env.VITE_HOTJAR_SITE_ID);
 const HOTJAR_VERSION = 6;
 
 export default function App() {
