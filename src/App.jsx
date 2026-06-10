@@ -25,7 +25,9 @@ const GA4_MEASUREMENT_ID = import.meta.env.VITE_GA4_MEASUREMENT_ID;
 
 export default function App() {
   useEffect(() => {
-    ReactGA.initialize(GA4_MEASUREMENT_ID);
+    if (GA4_MEASUREMENT_ID) {
+      ReactGA.initialize(GA4_MEASUREMENT_ID);
+    }
   }, []);
 
   return (
