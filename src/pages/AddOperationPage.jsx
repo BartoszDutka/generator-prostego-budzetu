@@ -24,7 +24,7 @@ export default function AddOperationPage() {
     e.preventDefault();
     setError('');
     const numAmount = parseFloat(amount);
-    if (numAmount % 10 !== 0) return setError('Kwota musi być wielokrotnością 10 (np. 10, 20, 100, 500).');
+    if (!numAmount || numAmount <= 0) return setError('Podaj prawidłową kwotę.');
     if (numAmount > 1000000000) return setError('Kwota nie może przekraczać 1 000 000 000 PLN.');
     setLoading(true);
     try {
@@ -97,8 +97,8 @@ export default function AddOperationPage() {
                     <div className="flex items-center justify-center gap-3">
                       <input
                         type="number"
-                        step="1"
-                        min="10"
+                        step="0.01"
+                        min="0.01"
                         max="1000000000"
                         className="text-4xl font-bold text-[#9CA3AF] text-center bg-transparent border-none outline-none w-40 focus:text-[#111827]"
                         placeholder="0"
