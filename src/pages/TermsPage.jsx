@@ -1,5 +1,6 @@
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
+import { downloadRegulamin } from '../utils/pdf';
 
 const sections = [
   {
@@ -95,13 +96,13 @@ export default function TermsPage() {
           </div>
 
           <div className="mt-6 flex items-center justify-between">
-            <button className="flex items-center gap-2 text-sm text-[#6B7280] hover:text-[#374151] transition-colors">
+            <button onClick={() => { window.print(); }} className="flex items-center gap-2 text-sm text-[#6B7280] hover:text-[#374151] transition-colors">
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
               </svg>
               Pobierz wersję PDF do druku
             </button>
-            <button className="bg-[#2563EB] hover:bg-[#1D4ED8] text-white font-semibold px-5 py-2.5 rounded-lg text-sm transition-colors">
+            <button onClick={downloadRegulamin} className="bg-[#2563EB] hover:bg-[#1D4ED8] text-white font-semibold px-5 py-2.5 rounded-lg text-sm transition-colors">
               Pobierz Regulamin
             </button>
           </div>

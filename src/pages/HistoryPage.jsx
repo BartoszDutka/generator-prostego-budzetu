@@ -3,6 +3,7 @@ import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import { useAuth } from '../context/AuthContext';
 import { getOperations, deleteOperation } from '../firebase/db';
+import { downloadRaport } from '../utils/pdf';
 
 const CATEGORY_ICONS = {
   Jedzenie:   { bg: '#FEF9C3', color: '#B45309' },
@@ -173,7 +174,10 @@ export default function HistoryPage() {
                 <p className="text-blue-100 text-sm mb-4">
                   Wygeneruj szczegółowe zestawienie ze wszystkimi operacjami.
                 </p>
-                <button className="bg-white text-[#2563EB] font-semibold px-5 py-2 rounded-lg text-sm hover:bg-gray-50 transition-colors">
+                <button
+                  onClick={() => downloadRaport(operations)}
+                  className="bg-white text-[#2563EB] font-semibold px-5 py-2 rounded-lg text-sm hover:bg-gray-50 transition-colors"
+                >
                   Pobierz Raport PDF
                 </button>
               </div>

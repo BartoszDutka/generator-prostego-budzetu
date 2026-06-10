@@ -2,6 +2,14 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
+import {
+  downloadKonfiguracjaKonta,
+  downloadPierwszyBudzet,
+  downloadDwuetapowaWeryfikacja,
+  downloadPolitykaPrywatnosci,
+  downloadZmianePlanu,
+  downloadEksportowanieDanych,
+} from '../utils/pdf';
 
 const categories = [
   {
@@ -13,7 +21,10 @@ const categories = [
     bg: 'bg-[#EFF6FF]',
     title: 'Pierwsze kroki',
     desc: 'Naucz się podstaw zarządzania budżetem w kilka minut.',
-    links: ['Konfiguracja konta', 'Twój pierwszy budżet'],
+    links: [
+      { label: 'Konfiguracja konta', fn: downloadKonfiguracjaKonta },
+      { label: 'Twój pierwszy budżet', fn: downloadPierwszyBudzet },
+    ],
   },
   {
     icon: (
@@ -24,7 +35,10 @@ const categories = [
     bg: 'bg-[#EFF6FF]',
     title: 'Bezpieczeństwo',
     desc: 'Dowiedz się, jak chronimy Twoje dane finansowe.',
-    links: ['Dwuetapowa weryfikacja', 'Polityka prywatności'],
+    links: [
+      { label: 'Dwuetapowa weryfikacja', fn: downloadDwuetapowaWeryfikacja },
+      { label: 'Polityka prywatności', fn: downloadPolitykaPrywatnosci },
+    ],
   },
   {
     icon: (
@@ -35,7 +49,10 @@ const categories = [
     bg: 'bg-[#EFF6FF]',
     title: 'Obsługa konta',
     desc: 'Zarządzanie subskrypcją, profilem i ustawieniami.',
-    links: ['Zmiana planu', 'Eksportowanie danych'],
+    links: [
+      { label: 'Zmiana planu', fn: downloadZmianePlanu },
+      { label: 'Eksportowanie danych', fn: downloadEksportowanieDanych },
+    ],
   },
 ];
 
@@ -94,14 +111,17 @@ export default function HelpPage() {
                 <h3 className="font-bold text-[#111827] mb-1">{cat.title}</h3>
                 <p className="text-sm text-[#6B7280] mb-3">{cat.desc}</p>
                 <ul className="space-y-1">
-                  {cat.links.map((link) => (
-                    <li key={link}>
-                      <a href="#" className="text-sm text-[#2563EB] hover:underline flex items-center gap-1">
-                        <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                  {cat.links.map(({ label, fn }) => (
+                    <li key={label}>
+                      <button
+                        onClick={fn}
+                        className="text-sm text-[#2563EB] hover:underline flex items-center gap-1"
+                      >
+                        <svg className="w-3.5 h-3.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                         </svg>
-                        {link}
-                      </a>
+                        {label}
+                      </button>
                     </li>
                   ))}
                 </ul>
