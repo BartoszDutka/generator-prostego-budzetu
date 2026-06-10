@@ -20,6 +20,7 @@ import HowItWorksPage from './pages/HowItWorksPage';
 import HelpPage from './pages/HelpPage';
 import ContactPage from './pages/ContactPage';
 import NotFoundPage from './pages/NotFoundPage';
+import SeedPage from './pages/SeedPage';
 
 const GA4_MEASUREMENT_ID = import.meta.env.VITE_GA4_MEASUREMENT_ID;
 
@@ -47,6 +48,7 @@ export default function App() {
 
           {/* Protected routes (require login) */}
           <Route element={<ProtectedRoute />}>
+            <Route path="/seed" element={<SeedPage />} />
             <Route path="/dashboard" element={<DashboardPage />} />
             <Route path="/add" element={<AddOperationPage />} />
             <Route path="/history" element={<HistoryPage />} />
