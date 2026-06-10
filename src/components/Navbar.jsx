@@ -19,7 +19,7 @@ export default function Navbar() {
   }
 
   const navLinkCls = ({ isActive }) =>
-    `text-sm font-medium transition-colors pb-0.5 ${
+    `text-sm font-medium transition-colors whitespace-nowrap pb-0.5 ${
       isActive
         ? 'text-[#2563EB] border-b-2 border-[#2563EB]'
         : 'text-[#374151] hover:text-[#2563EB]'
@@ -32,28 +32,10 @@ export default function Navbar() {
         : 'text-[#374151] hover:text-[#2563EB] hover:bg-[#F3F4F6]'
     }`;
 
-  const HamburgerIcon = () => (
-    <button
-      className="sm:hidden p-2 rounded-lg text-[#374151] hover:bg-[#F3F4F6] transition-colors"
-      onClick={() => setMenuOpen((o) => !o)}
-      aria-label="Menu"
-    >
-      {menuOpen ? (
-        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-        </svg>
-      ) : (
-        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-        </svg>
-      )}
-    </button>
-  );
-
   return (
     <nav className="bg-white border-b border-[#E5E7EB]">
       <div className="w-full px-4 sm:px-6 lg:px-8">
-        <div className="relative flex items-center justify-between h-16">
+        <div className="flex items-center justify-between h-16 gap-4">
 
           {/* Logo */}
           <Link to={currentUser ? '/dashboard' : '/'} className="flex-shrink-0">
@@ -62,19 +44,19 @@ export default function Navbar() {
 
           {currentUser ? (
             <>
-              {/* Center nav — desktop */}
-              <div className="hidden sm:flex items-center gap-8 absolute left-1/2 -translate-x-1/2">
+              {/* Center nav — visible only on large screens */}
+              <div className="hidden lg:flex items-center gap-6 flex-1 justify-center">
                 <NavLink to="/dashboard" className={navLinkCls}>Pulpit</NavLink>
                 <NavLink to="/history" className={navLinkCls}>Historia</NavLink>
                 <NavLink to="/add" className={navLinkCls}>Dodaj operację</NavLink>
               </div>
 
-              {/* Right — desktop */}
-              <div className="hidden sm:flex items-center gap-5">
+              {/* Right — visible only on large screens */}
+              <div className="hidden lg:flex items-center gap-5 flex-shrink-0">
                 <NavLink
                   to="/profile"
                   className={({ isActive }) =>
-                    `flex items-center gap-2 text-sm font-medium transition-colors ${
+                    `flex items-center gap-2 text-sm font-medium whitespace-nowrap transition-colors ${
                       isActive ? 'text-[#2563EB]' : 'text-[#374151] hover:text-[#2563EB]'
                     }`
                   }
@@ -86,22 +68,37 @@ export default function Navbar() {
                 </NavLink>
                 <button
                   onClick={handleLogout}
-                  className="text-sm font-semibold text-[#EF4444] hover:text-red-600 transition-colors"
+                  className="text-sm font-semibold whitespace-nowrap text-[#EF4444] hover:text-red-600 transition-colors"
                 >
                   Wyloguj się
                 </button>
               </div>
 
-              <HamburgerIcon />
+              {/* Hamburger — visible below lg */}
+              <button
+                className="lg:hidden p-2 rounded-lg text-[#374151] hover:bg-[#F3F4F6] transition-colors flex-shrink-0"
+                onClick={() => setMenuOpen((o) => !o)}
+                aria-label="Menu"
+              >
+                {menuOpen ? (
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                ) : (
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                  </svg>
+                )}
+              </button>
             </>
           ) : (
             <>
-              {/* Public — desktop */}
-              <div className="hidden sm:flex items-center gap-4">
+              {/* Public links — desktop */}
+              <div className="hidden sm:flex items-center gap-4 flex-shrink-0">
                 <NavLink
                   to="/login"
                   className={({ isActive }) =>
-                    `text-sm font-medium transition-colors ${
+                    `text-sm font-medium transition-colors whitespace-nowrap ${
                       isActive ? 'text-[#2563EB]' : 'text-[#374151] hover:text-[#2563EB]'
                     }`
                   }
@@ -110,21 +107,36 @@ export default function Navbar() {
                 </NavLink>
                 <NavLink
                   to="/register"
-                  className="bg-[#2563EB] hover:bg-[#1D4ED8] text-white font-semibold px-5 py-2 rounded-lg text-sm transition-colors"
+                  className="bg-[#2563EB] hover:bg-[#1D4ED8] text-white font-semibold px-5 py-2 rounded-lg text-sm transition-colors whitespace-nowrap"
                 >
                   Zarejestruj się
                 </NavLink>
               </div>
 
-              <HamburgerIcon />
+              {/* Hamburger — mobile only (public) */}
+              <button
+                className="sm:hidden p-2 rounded-lg text-[#374151] hover:bg-[#F3F4F6] transition-colors flex-shrink-0"
+                onClick={() => setMenuOpen((o) => !o)}
+                aria-label="Menu"
+              >
+                {menuOpen ? (
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                ) : (
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                  </svg>
+                )}
+              </button>
             </>
           )}
         </div>
       </div>
 
-      {/* Mobile menu */}
+      {/* Mobile / tablet menu */}
       {menuOpen && (
-        <div className="sm:hidden border-t border-[#E5E7EB] bg-white px-4 py-3 space-y-1">
+        <div className="lg:hidden border-t border-[#E5E7EB] bg-white px-4 py-3 space-y-1">
           {currentUser ? (
             <>
               <NavLink to="/dashboard" className={mobileNavLinkCls} onClick={() => setMenuOpen(false)}>Pulpit</NavLink>
