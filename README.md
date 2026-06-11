@@ -643,9 +643,10 @@ Projekt **Generator Prostego Budżetu** spełnia wszystkie wymagania checklist T
 
 ---
 
-## Autor
+## Autorzy
 
 **Bartosz Dutka**  
+**Patryk Gal**  
 Politechnika Krakowska  
 Przedmiot: TPF — Technologie i Platformy Frontendowe  
 Rok akademicki: 2025/2026
