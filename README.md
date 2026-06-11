@@ -622,20 +622,11 @@ cd "C:\Users\...\projekt"; npm install
 
 ## Podsumowanie
 
-Projekt **Generator Prostego Budżetu** zawiera następujące elementy:
+**Generator Prostego Budżetu** to w pełni działająca aplikacja webowa do zarządzania finansami osobistymi, zbudowana w React z użyciem Vite jako narzędzia deweloperskiego. Aplikacja oferuje kompletny system autoryzacji oparty na Firebase Authentication, obsługując zarówno logowanie przez e-mail i hasło, jak i przez konto Google. Dane użytkowników są przechowywane w Cloud Firestore z regułami bezpieczeństwa ograniczającymi dostęp wyłącznie do właściciela konta.
 
-- Odwzorowanie widoków zgodnie z projektem Figma
-- React jako framework frontendowy
-- Routing przez React Router v6
-- Podział na strony (`pages/`) i komponenty (`components/`)
-- Stylowanie przez Tailwind CSS
-- Firebase Authentication (e-mail + Google)
-- Cloud Firestore z regułami bezpieczeństwa
-- Chronione trasy (`ProtectedRoute`)
-- Google Analytics 4 (pageview + zdarzenia)
-- Hotjar / Contentsquare (heatmapy, session replay)
-- Deploy na Netlify z CI/CD przez GitHub
-- Dokumentacja README z screenami aplikacji, Google Analytics i Hotjar/Contentsquare
+Nawigacja między widokami jest obsługiwana przez React Router v6, z podziałem na trasy publiczne dostępne dla wszystkich oraz chronione, wymagające zalogowania. Interfejs użytkownika jest zbudowany z komponentów wielokrotnego użytku i stylowany przy pomocy Tailwind CSS, zgodnie z projektem Figma.
+
+Aplikacja jest zintegrowana z Google Analytics 4, który rejestruje odsłony stron i zdarzenia użytkowników, oraz z Contentsquare, umożliwiającym analizę zachowań użytkowników poprzez heatmapy, zoning analysis i nagrania sesji. Projekt jest wdrożony na platformie Netlify z automatycznym CI/CD przez GitHub.
 
 ---
 
