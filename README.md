@@ -1,6 +1,10 @@
 # Generator Prostego Budżetu
 
-Aplikacja webowa do zarządzania budżetem osobistym - zbudowana w React 18 + Vite, z Firebase Authentication, Cloud Firestore, Google Analytics 4 oraz Contentsquare. Wdrożona na Netlify.
+**Generator Prostego Budżetu** to aplikacja webowa służąca do zarządzania finansami osobistymi. Jej celem jest umożliwienie użytkownikowi pełnej kontroli nad swoimi przychodami i wydatkami w prosty, przejrzysty sposób — bez zbędnych komplikacji.
+
+Po zarejestrowaniu i zalogowaniu się użytkownik otrzymuje dostęp do spersonalizowanego panelu finansowego, w którym może na bieżąco śledzić swój bilans, dodawać operacje finansowe z przypisaniem do kategorii, przeglądać historię transakcji oraz tworzyć plan oszczędnościowy z prognozą realizacji celu. Aplikacja oferuje również eksport raportu finansowego do formatu PDF oraz import danych z pliku lub bezpośrednio z wybranych banków.
+
+Projekt został zrealizowany z wykorzystaniem React 18 i Vite jako środowiska deweloperskiego, Firebase Authentication do obsługi logowania (e-mail/hasło oraz Google), Cloud Firestore jako bazy danych oraz Tailwind CSS do stylowania interfejsu. Aplikacja jest wdrożona na platformie Netlify z automatycznym CI/CD przez GitHub.
 
 **Link do aplikacji:** [https://generator-prostego-budzetu.netlify.app](https://generator-prostego-budzetu.netlify.app)
 
@@ -153,9 +157,9 @@ Przegląd raportów GA4 - pokazuje łączną liczbę aktywnych użytkowników (7
 
 ---
 
-Szczegółowy raport GA4 — widoczne dane o źródłach sesji (direct/none — 7 sesji, app.contentsquare.com — 2 sesje), wykres nowych i powracających użytkowników w czasie, aktywni użytkownicy według miast (Katowice, Kraków, Rabka-Zdrój, Warsaw, Wrocław) oraz łączna liczba aktywnych odbiorców (7).
+Szczegółowy raport GA4 - widoczne dane o źródłach sesji (direct/none - 7 sesji, app.contentsquare.com - 2 sesje), wykres nowych i powracających użytkowników w czasie, aktywni użytkownicy według miast (Katowice, Kraków, Rabka-Zdrój, Warsaw, Wrocław) oraz łączna liczba aktywnych odbiorców (7).
 
-![Google Analytics — raport szczegółowy](./screens/google-analytics-report.png)
+![Google Analytics - raport szczegółowy](./screens/google-analytics-report.png)
 
 ---
 
