@@ -622,24 +622,20 @@ cd "C:\Users\...\projekt"; npm install
 
 ## Podsumowanie
 
-Projekt **Generator Prostego Budżetu** spełnia wszystkie wymagania checklist TPF:
+Projekt **Generator Prostego Budżetu** zawiera następujące elementy:
 
-| Wymaganie | Status |
-|---|---|
-| Odwzorowanie widoków zgodnie z projektem Figma | ✅ |
-| React jako framework frontendowy | ✅ |
-| Routing przez React Router v6 | ✅ |
-| Podział na strony (`pages/`) i komponenty (`components/`) | ✅ |
-| Stylowanie przez Tailwind CSS | ✅ |
-| Firebase Authentication (e-mail + Google) | ✅ |
-| Cloud Firestore z regułami bezpieczeństwa | ✅ |
-| Chronione trasy (`ProtectedRoute`) | ✅ |
-| Google Analytics 4 (pageview + zdarzenia) | ✅ |
-| Hotjar / Contentsquare (heatmapy, session replay) | ✅ |
-| Deploy na Netlify z CI/CD przez GitHub | ✅ |
-| Dokumentacja README z screenami aplikacji | ✅ |
-| Screeny użycia Google Analytics | ✅ |
-| Screeny aplikacji w Hotjar / Contentsquare | ✅ |
+- Odwzorowanie widoków zgodnie z projektem Figma
+- React jako framework frontendowy
+- Routing przez React Router v6
+- Podział na strony (`pages/`) i komponenty (`components/`)
+- Stylowanie przez Tailwind CSS
+- Firebase Authentication (e-mail + Google)
+- Cloud Firestore z regułami bezpieczeństwa
+- Chronione trasy (`ProtectedRoute`)
+- Google Analytics 4 (pageview + zdarzenia)
+- Hotjar / Contentsquare (heatmapy, session replay)
+- Deploy na Netlify z CI/CD przez GitHub
+- Dokumentacja README z screenami aplikacji, Google Analytics i Hotjar/Contentsquare
 
 ---
 
